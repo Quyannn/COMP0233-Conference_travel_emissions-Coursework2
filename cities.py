@@ -1,6 +1,32 @@
+import csv
+import numpy as np
+from dataclasses import dataclass
 
+data = []
+csv_reader = csv.reader(open("attendee_locations.csv"))
+for line in csv_reader:
+    data.append(line)
+    
+@dataclass
 class City:
-    ...
+    city: str
+    country: str
+    attendee: int
+    lat: float
+    lon: float
+    
+    def __init__(self, name: str, unit_price: float, quantity_on_hand: int = 0):
+    self.name = name
+    self.unit_price = unit_price
+    self.quantity_on_hand = quantity_on_hand
+    
+    def __init__(self,city,country,N,lat,lon):
+        self.city = city
+        self.country = country
+        self.N = N
+        self.lat = lat
+        self.lon = lon
+        
     def distance_to(self, other: 'City') -> float:
         raise NotImplementedError
 
