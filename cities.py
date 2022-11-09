@@ -1,38 +1,46 @@
+from typing import Dict, List
 import csv
 import numpy as np
-from dataclasses import dataclass
+import utils
+from utils import validate_all_info
 
 data = []
 csv_reader = csv.reader(open("attendee_locations.csv"))
 for line in csv_reader:
     data.append(line)
-    
-@dataclass
+#print(data[1][1])
+
 class City:
-    city: str
-    country: str
-    attendee: int
-    lat: float
-    lon: float
     
-    def __init__(self, name: str, unit_price: float, quantity_on_hand: int = 0):
-    self.name = name
-    self.unit_price = unit_price
-    self.quantity_on_hand = quantity_on_hand
-    
-    def __init__(self,city,country,N,lat,lon):
-        self.city = city
+    def __init__(self,city,country,attendee,lat,lon):
+        '''
+        if city == '' or not isinstance(city,str):
+            raise ValueError('Invalid city name, it should be a string.')
+            
+        if country == '' or not isinstance(country,str):
+            raise ValueError('Invalid country name, it should be a string.')
+            
+        if atttendee 
+        if lat > 90 or lat < -90
+        '''
+        utils.validate_all_info(city,country,attendee,lat,lon)
+        self.city  = city
         self.country = country
-        self.N = N
-        self.lat = lat
-        self.lon = lon
-        
+        self.attendee = attendee
+        self.lat, self.lon = lat, lon
+    
+
+    
     def distance_to(self, other: 'City') -> float:
         raise NotImplementedError
 
     def co2_to(self, other: 'City') -> float:
         raise NotImplementedError
+        
+city1 = City(data[1][3], data[1][1], data[1][0], data[1][4], data[1][5])
+print(city1)
 
+'''
 class CityCollection:
     ...
 
@@ -62,3 +70,4 @@ class CityCollection:
 
     def plot_top_emitters(self, city: City, n: int, save: bool):
         raise NotImplementedError
+'''
