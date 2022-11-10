@@ -1,30 +1,22 @@
 from cities import City, CityCollection
+from pathlib import Path
+import csv
 
-def read_attendees_file(filepath: str) -> CityCollection:
-    raise NotImplementedError
 
-def is_pos_int(attendee):
-    return isinstance(attendee, int) and attendee > 0
+filepath = Path("attendee_locations.csv")
 
-def is_valid_location(lat, lon):
-    return -90 <= lat <= 90 and -180 <= lon <= 180
 
-def is_valid_city(city):
-    return isinstance(city, str)
+def read_attendees_file(filepath) -> CityCollection:
+    data = []
+    csv_reader = csv.reader(open(filepath))
+    for line in csv_reader:
+        data.append(line)
+    
+    return data[1:]
 
-def is_valid_country(country):
-    return isinstance(country, str)
 
-def is_valid_state(state):
-    return isinstance(state, str)
-
-def validate_all_info(attendee,country,city,lat,lon):
-    #Validate the infomation input.
-    if not is_pos_int(attendee):
-        raise ValueError("Attendee should be a positive integer.")
-    if not is_valid_country(country):
-        raise ValueError("Country should be a string.")
-    if not is_valid_city(city):
-        raise ValueError("City should be a string.")
-    if not is_valid_location(lat, lon):
-        raise ValueError("Latitude should in [-90,90] and longitude should in [-180,180].")
+citydata = read_attendees_file(filepath)
+#print(citydata[1][0])
+city1 = City(citydata[1][3],citydata[1][1],int(citydata[1][0]),float(citydata[1][4]),float(citydata[1][5]))
+city2 = City(citydata[56][3],citydata[56][1],int(citydata[56][0]),float(citydata[56][4]),float(citydata[56][5]))
+distance_12 = city1.distance_to(city2)
