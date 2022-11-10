@@ -33,12 +33,17 @@ class City:
                                               
         return distance                                      
 
-    # The function to compute CO2 estimation
+    # The function to calculate the CO2 emissions
     def co2_to(self, other: 'City') -> float:
-        raise NotImplementedError
+        dist = self.distance_to(other)
+        if dist <= 1000:
+            total_CO2 = self.attendee * dist * 200
+        elif dist > 1000 and dist <= 8000:
+            total_CO2 = self.attendee * dist * 250
+        else:
+            total_CO2 = self.attendee * dist * 300
+        return total_CO2
         
-
-
 
 class CityCollection:
     ...
