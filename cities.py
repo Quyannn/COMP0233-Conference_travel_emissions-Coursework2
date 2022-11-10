@@ -1,46 +1,45 @@
 from typing import Dict, List
-import csv
-import numpy as np
-import utils
-from utils import validate_all_info
-
-data = []
-csv_reader = csv.reader(open("attendee_locations.csv"))
-for line in csv_reader:
-    data.append(line)
-#print(data[1][1])
+import math
 
 class City:
-    
-    def __init__(self,city,country,attendee,lat,lon):
-        '''
-        if city == '' or not isinstance(city,str):
-            raise ValueError('Invalid city name, it should be a string.')
-            
-        if country == '' or not isinstance(country,str):
-            raise ValueError('Invalid country name, it should be a string.')
-            
-        if atttendee 
-        if lat > 90 or lat < -90
-        '''
-        utils.validate_all_info(city,country,attendee,lat,lon)
+    def __init__(self,city:str,country:str,attendee:int,lat:float,lon:float):
         self.city  = city
         self.country = country
         self.attendee = attendee
         self.lat, self.lon = lat, lon
-    
-
-    
+        
+        # Validate the infomation
+        if not isinstance(city,str) or city == '':
+            raise ValueError('City should be a string.')
+        if not isinstance(country,str) or country =='':
+            raise ValueError('Country should be a string.')
+        if not isinstance(attendee, int) or attendee < 0:
+            raise ValueError('Attendee should be a positive integer.')
+        if not isinstance(lat,float) or lat > 90 or lat < -90:
+            raise ValueError('Latitude should be a float in [-90,90].')
+        if not isinstance(lon,float) or lon > 180 or lon < -180:
+            raise ValueError('Longitude should be a float in [-180,180].')
+            
+    # The function to compute distance between two cities.
     def distance_to(self, other: 'City') -> float:
-        raise NotImplementedError
+        R = 6371
+        lat_departure = self.lat
+        lat_destination = other.lat
+        lon_departure = self.lon
+        lon_destination = other.lon
+        distance = 2 * R * math.asin(math.sqrt(math.pow(math.sin((lat_destination-lat_departure)/2), 2))+
+                                     math.cos(lat_departure) * math.cos(lat_destination) * 
+                                     math.pow(math.sin((lon_destination-lon_departure)/2),2))
+                                              
+        return distance                                      
 
+    # The function to compute CO2 estimation
     def co2_to(self, other: 'City') -> float:
         raise NotImplementedError
         
-city1 = City(data[1][3], data[1][1], data[1][0], data[1][4], data[1][5])
-print(city1)
 
-'''
+
+
 class CityCollection:
     ...
 
@@ -70,4 +69,4 @@ class CityCollection:
 
     def plot_top_emitters(self, city: City, n: int, save: bool):
         raise NotImplementedError
-'''
+
